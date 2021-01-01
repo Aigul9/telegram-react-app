@@ -6,14 +6,16 @@ import PostStatusFilter from '../post-status-filter';
 import PostList from '../post-list';
 import PostAddForm from '../post-add-form';
 
-import '../app/app.css';
-import '../app-header/app-header.css';
-import '../search-panel/search-panel.css';
-import '../post-status-filter/post-status-filter.css';
-import '../post-list/post-list.css';
-import '../post-add-form/post-add-form.css';
+import './app.css';
 
 const App = () => {
+
+    const data = [
+        {label: 'First post', important: true, id: 'werw'},
+        {label: 'Second post', important: false, id: 'gesd'},
+        {label: 'Third post', important: false, id: 'fhld'}
+    ];
+
     return (
         <div className="app">
             <AppHeader/>
@@ -21,7 +23,7 @@ const App = () => {
                 <SearchPanel/>
                 <PostStatusFilter/>
             </div>
-            <PostList/>
+            <PostList posts={data}/>
             <PostAddForm/>
         </div>
     )
