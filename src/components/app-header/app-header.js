@@ -22,12 +22,12 @@ const Header = styled.div`
     }
 `;
 
-const AppHeader = () => {
+const AppHeader = ({liked, allPosts}) => {
     return (
         // use as link
         <Header colored as="a">
             <h1>{name}</h1>
-            <h2>0 saved notes out of 5</h2>
+            <h2>{liked} liked posts out of {allPosts}</h2>
         </Header>
     )
 };

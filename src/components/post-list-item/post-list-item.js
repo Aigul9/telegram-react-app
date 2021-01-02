@@ -5,28 +5,9 @@ import './post-list-item.css';
 // states can be used only in classes
 export default class PostListItem extends Component {
 
-    state = {
-        important: false,
-        like: false
-    };
-
-    // es9 class fields
-    onImportant = () => {
-        this.setState(state => ({
-            important: !state.important
-        }))
-    }
-
-    onLike = () => {
-        this.setState(state => ({
-            like: !state.like
-        }))
-    }
-
     render() {
 
-        const {label, onDelete} = this.props;
-        const {important, like} = this.state;
+        const {label, onDelete, onToggleImportant, onToggleLike, important, like} = this.props;
         let classNames = 'app-list-item d-flex justify-content-between';
 
         if (important) {
@@ -41,13 +22,13 @@ export default class PostListItem extends Component {
             <div className={classNames}>
                 <span
                 className="app-list-item-label"
-                onClick={this.onLike}>
+                onClick={onToggleLike}>
                     {label}
                 </span>
                 <div className="d-flex justify-content-center align-items-center">
                     <button
                         className="btn-star btn-sm"
-                        onClick={this.onImportant}>
+                        onClick={onToggleImportant}>
                         <i className="fa fa-star"></i>
                     </button>
                     <button
