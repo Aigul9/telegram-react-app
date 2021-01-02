@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 
 import AppHeader from '../app-header';
 import SearchPanel from '../search-panel';
@@ -21,25 +21,46 @@ const AppBlock = styled.div`
 // const StyledAppBlock = styled(AppBlock)`
 //     background-color: gray`;
 
-const App = () => {
+export default class App extends Component {
 
-    const data = [
-        {label: 'First post', important: true, id: 'werw'},
-        {label: 'Second post', important: false, id: 'gesd'},
-        {label: 'Third post', important: false, id: 'fhld'}
-    ];
+    state = {
+        data: [
+            {label: 'First post', important: true, id: 'werw'},
+            {label: 'Second post', important: false, id: 'gesd'},
+            {label: 'Third post', important: false, id: 'fhld'}
+        ]
+    }
 
-    return (
-        <AppBlock>
-            <AppHeader/>
-            <div className="search-panel d-flex">
-                <SearchPanel/>
-                <PostStatusFilter/>
-            </div>
-            <PostList posts={data}/>
-            <PostAddForm/>
-        </AppBlock>
-    )
-};
+    deleteItem = (id) => {
+        this.setState(({data}) => {
+            const index = data.findIndex(elem => elem.id === id);
+            // copy instead
+            // we are not allowed to change current state
+            const before = data.slice(0, index),
+                  after = data.slice(index + 1);
+            
+            const newArr = [...before, ...after]; //spread
 
-export default App;
+            return {
+                data: newArr
+            };
+        })
+        console.log(id);
+    }
+
+    render() {
+        return (
+            <AppBlock>
+                <AppHeader/>
+                <div className="search-panel d-flex">
+                    <SearchPanel/>
+                    <PostStatusFilter/>
+                </div>
+                <PostList
+                    posts={this.state.data}
+                    onDelete={this.deleteItem}/>
+                <PostAddForm/>
+            </AppBlock>
+        )
+    }
+}
