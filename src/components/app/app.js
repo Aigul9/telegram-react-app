@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import nextId from "react-id-generator";
+
 import AppHeader from '../app-header';
 import SearchPanel from '../search-panel';
 import PostStatusFilter from '../post-status-filter';
@@ -25,27 +27,45 @@ export default class App extends Component {
 
     state = {
         data: [
-            {label: 'First post', important: true, id: 'werw'},
-            {label: 'Second post', important: false, id: 'gesd'},
-            {label: 'Third post', important: false, id: 'fhld'}
+            {label: 'First post', important: true, id: nextId()},
+            {label: 'Second post', important: false, id: nextId()},
+            {label: 'Third post', important: false, id: nextId()}
         ]
     }
 
+    maxId = 4;
+
     deleteItem = (id) => {
         this.setState(({data}) => {
-            const index = data.findIndex(elem => elem.id === id);
-            // copy instead
-            // we are not allowed to change current state
-            const before = data.slice(0, index),
-                  after = data.slice(index + 1);
+            // const index = data.findIndex(elem => elem.id === id);
+            // // copy instead
+            // // we are not allowed to change current state
+            // const before = data.slice(0, index),
+            //       after = data.slice(index + 1);
             
-            const newArr = [...before, ...after]; //spread
+            // const newArr = [...before, ...after]; //spread
+
+            console.log(id);
 
             return {
-                data: newArr
+                data: data.filter(elem => elem.id !== id)
             };
         })
-        console.log(id);
+    }
+
+    addItem = (body) => {
+        const newItem = {
+            label: body,
+            important: false,
+            id: nextId()
+        }
+        this.setState(({data}) => {
+            const newArr = [...data, newItem];
+            return {
+                data: newArr
+            }
+        });
+        console.log(newItem);
     }
 
     render() {
@@ -59,7 +79,8 @@ export default class App extends Component {
                 <PostList
                     posts={this.state.data}
                     onDelete={this.deleteItem}/>
-                <PostAddForm/>
+                <PostAddForm
+                    onAdd={this.addItem}/>
             </AppBlock>
         )
     }
