@@ -30,7 +30,8 @@ export default class App extends Component {
             {label: 'First post', important: true, like: false, id: nextId()},
             {label: 'Second post', important: false, like: false, id: nextId()},
             {label: 'Third post', important: false, like: false, id: nextId()}
-        ]
+        ],
+        term: '' // search
     }
 
     deleteItem = (id) => {
@@ -84,10 +85,26 @@ export default class App extends Component {
         });
     }
 
+    searchPost = (items, term) => {
+        // if user just opened the app or deleted the text
+        if (term.length === 0) {
+            return items;
+        }
+
+        return items.filter(item => item.label.toLowerCase().indexOf(term.toLowerCase()) !== -1);
+    }
+
+    onUpdateSearch = (term) => {
+        this.setState({term});
+    }
+
     render() {
-        const {data} = this.state;
+        const {data, term} = this.state;
+
         const liked = data.filter(item => item.like).length;
         const allPosts = data.length;
+
+        const visiblePosts = this.searchPost(data, term);
 
         return (
             <AppBlock>
@@ -95,11 +112,12 @@ export default class App extends Component {
                     liked={liked}
                     allPosts={allPosts}/>
                 <div className="search-panel d-flex">
-                    <SearchPanel/>
+                    <SearchPanel
+                        onUpdateSearch={this.onUpdateSearch}/>
                     <PostStatusFilter/>
                 </div>
                 <PostList
-                    posts={this.state.data}
+                    posts={visiblePosts}
                     onDelete={this.deleteItem}
                     onToggleImportant={this.onToggleImportant}
                     onToggleLike={this.onToggleLike}/>
