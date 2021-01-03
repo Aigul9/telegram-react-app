@@ -20,12 +20,12 @@ export default class PostAddForm extends Component {
     onSubmit = (e) => {
         e.preventDefault();
         const {text} = this.state;
-        if (text) {
+        // if (text) {
             this.props.onAdd(text);
             this.setState({
                 text: ''
             });
-        }
+        // }
     }
 
     render() {
